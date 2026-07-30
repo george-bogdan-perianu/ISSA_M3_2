@@ -113,7 +113,7 @@ def low_check(hex_nr):
         val = hex_nr
 
     low = val & 0xFF
-    if low == 0x01
+    if low == 0x01:
         return True
     else:
         return False

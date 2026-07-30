@@ -94,14 +94,29 @@ class Ui_MainWindow(object):
     
 ############################### EXERCISE 5 ###############################
     def start_server(self):
-      self.key.setEnabled(True)
-      self.airbag_label.setVisible(False)
-      self.ecu_defect_label.clear()
-      self.dashboard_label.setVisible(False)
-      self.key.setVisible(True)
-      self.unlock.setVisible(True)
-      self.images()
-      "Complete with the necesarry code"    
+        self.key.setEnabled(True)
+        self.airbag_label.setVisible(False)
+        self.ecu_defect_label.clear()
+        self.dashboard_label.setVisible(False)
+        self.key.setVisible(True)
+        self.unlock.setVisible(True)
+        self.images()
+
+        global server
+        global public_key
+        global private_key
+        global server_created_flag
+        public_key, private_key = rsa_library.generate_keypair(277, 239)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((HOST, PORT))
+        s.listen(1)
+        server, addr = s.accept()
+        server_created_flag = True
+        key_data = cPickle.dumps(public_key)
+        server.send(key_data)
+        self.recv_messages()
+
 
 ############################### EXERCISE 6 ###############################   
     def send_key_data(self):

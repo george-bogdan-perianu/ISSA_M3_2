@@ -102,13 +102,36 @@ class Ui_MainWindow(object):
 
 ############################### EXERCISE 5 ###############################
     def start_client(self):
-      self.corrupted_low_label.clear()
-      self.airbag_on_label.clear()
-      self.corrupted_high_label.clear()
-      self.airbag.setEnabled(False)
-      self.corrupted_high.setEnabled(False)
-      self.corrupted_low.setEnabled(False)
-      ''' complete with necesarry code '''
+        self.corrupted_low_label.clear()
+        self.airbag_on_label.clear()
+        self.corrupted_high_label.clear()
+        self.airbag.setEnabled(False)
+        self.corrupted_high.setEnabled(False)
+        self.corrupted_low.setEnabled(False)
+
+        global client
+        global public_key
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        try:
+            client.connect((HOST, PORT))
+            self.connected_label.setText("Connected")
+            self.connected_label.setStyleSheet("font-size:15px;font:bold;color:green;qproperty-alignment: AlignCenter;")
+
+            key_data = client.recv(1024)
+
+            public_key = cPickle.loads(key_data)
+
+            self.airbag.setEnabled(True)
+            self.corrupted_low.setEnabled(True)
+            self.corrupted_high.setEnabled(True)
+
+            self.recv_messages()
+
+        except Exception as e:
+            self.connected_label.setText("Error")
+            self.connected_label.setStyleSheet("font-size:15px;font:bold;color:red;qproperty-alignment: AlignCenter;")
 
           
 ############################### EXERCISE 8 ###############################
