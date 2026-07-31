@@ -120,16 +120,18 @@ class Ui_MainWindow(object):
 
 ############################### EXERCISE 6 ###############################   
     def send_key_data(self):
-       pass
-       ''' complete with necesarry code '''
+       global server
+       global public_key
+       global unlockCar
 
-       
-       #Uncomment the following 3 lines after this exercise is completed
-       '''
+       encrypted_message = rsa_library.encrypt(public_key, unlockCar)
+
+       server.send(str(encrypted_message).encode('utf-8'))
+
        self.dashboard_label.setVisible(True)
        self.unlock.setVisible(False)
        self.key.setVisible(False)
-       '''
+
 
 ############################### EXERCISE 7 ###############################   
     def recv_messages(self):
